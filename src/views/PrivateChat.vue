@@ -253,7 +253,9 @@ export default {
                         allMessages.push(doc.data());
                     });
                     this.messages = allMessages;
-                    this.scrollToBottom();
+                    setTimeout(() => {
+                        this.scrollToBottom();
+                    }, 1000);
                 });
         },
         logout() {
