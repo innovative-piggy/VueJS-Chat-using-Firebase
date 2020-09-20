@@ -237,7 +237,7 @@ export default {
                     message: this.message,
                     author: this.authUser.displayName,
                     avatar: this.authUser.photoURL,
-                    created_at: new Date(),
+                    created_at: firebase.firestore.FieldValue.serverTimestamp(),
                 })
                 .then(() => {
                     this.scrollToBottom();
@@ -272,6 +272,7 @@ export default {
                 self.authUser = {};
             }
         });
+        
     },
     beforeRouteEnter(to, from, next) {
         next((vm) => {
