@@ -228,7 +228,7 @@ export default {
     methods: {
         scrollToBottom() {
             const box = document.querySelector(".msg_history");
-            box.scrollTop = box.scrollHeight;
+            if (box.scrollHeight != null) box.scrollTop = box.scrollHeight;
         },
         saveMessage() {
             if (this.message == null) return;
@@ -272,7 +272,6 @@ export default {
                 self.authUser = {};
             }
         });
-        
     },
     beforeRouteEnter(to, from, next) {
         next((vm) => {
@@ -320,7 +319,6 @@ img {
     display: inline-block;
     text-align: right;
     width: 60%;
-    padding: ;
 }
 .headind_srch {
     padding: 10px 29px 10px 20px;
