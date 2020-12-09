@@ -207,11 +207,7 @@
 </template>
 
 <script>
-<<<<<<< HEAD
 import firebase from 'firebase'
-=======
-	import firebase from "firebase";
->>>>>>> 73a701a0a5a5f7777982bf38725ab0f281a4abcd
 
 export default {
   name: 'PrivateChat',
