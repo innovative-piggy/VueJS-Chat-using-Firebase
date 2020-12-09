@@ -214,77 +214,77 @@
 </template>
 
 <script>
-import firebase from "firebase";
+import firebase from 'firebase'
 
 export default {
-    name: "PrivateChat",
-    data() {
-        return {
-            message: null,
-            messages: [],
-            authUser: {},
-        };
+  name: 'PrivateChat',
+  data () {
+    return {
+      message: null,
+      messages: [],
+      authUser: {}
+    }
+  },
+  methods: {
+    scrollToBottom () {
+      const box = document.querySelector('.msg_history')
+      if (box.scrollHeight != null) box.scrollTop = box.scrollHeight
     },
-    methods: {
-        scrollToBottom() {
-            const box = document.querySelector(".msg_history");
-            if (box.scrollHeight != null) box.scrollTop = box.scrollHeight;
-        },
-        saveMessage() {
-            if (this.message == null) return;
-            db.collection("chat")
-                .add({
-                    message: this.message,
-                    author: this.authUser.displayName,
-                    avatar: this.authUser.photoURL,
-                    created_at: firebase.firestore.FieldValue.serverTimestamp(),
-                })
-                .then(() => {
-                    this.scrollToBottom();
-                });
-            this.message = null;
-        },
-        fetchMessages() {
-            db.collection("chat")
-                .orderBy("created_at")
-                .onSnapshot((querySnapshot) => {
-                    const allMessages = [];
-                    querySnapshot.forEach((doc) => {
-                        allMessages.push(doc.data());
-                    });
-                    this.messages = allMessages;
-                    setTimeout(() => {
-                        this.scrollToBottom();
-                    }, 1000);
-                });
-        },
-        logout() {
-            firebase.auth().signOut();
-        },
+    saveMessage () {
+      if (this.message == null) return
+      db.collection('chat')
+        .add({
+          message: this.message,
+          author: this.authUser.displayName,
+          avatar: this.authUser.photoURL,
+          created_at: firebase.firestore.FieldValue.serverTimestamp()
+        })
+        .then(() => {
+          this.scrollToBottom()
+        })
+      this.message = null
     },
-    created() {
-        const self = this;
-        this.fetchMessages();
-        firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-                self.authUser = user;
-            } else {
-                self.authUser = {};
-            }
-        });
+    fetchMessages () {
+      db.collection('chat')
+        .orderBy('created_at')
+        .onSnapshot((querySnapshot) => {
+          const allMessages = []
+          querySnapshot.forEach((doc) => {
+            allMessages.push(doc.data())
+          })
+          this.messages = allMessages
+          setTimeout(() => {
+            this.scrollToBottom()
+          }, 1000)
+        })
     },
-    beforeRouteEnter(to, from, next) {
-        next((vm) => {
-            firebase.auth().onAuthStateChanged((user) => {
-                if (user) {
-                    next();
-                } else {
-                    vm.$router.push("/");
-                }
-            });
-        });
-    },
-};
+    logout () {
+      firebase.auth().signOut()
+    }
+  },
+  created () {
+    const self = this
+    this.fetchMessages()
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        self.authUser = user
+      } else {
+        self.authUser = {}
+      }
+    })
+  },
+  beforeRouteEnter (to, from, next) {
+    next((vm) => {
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          next()
+        } else {
+          vm.$router.push('/')
+        }
+      })
+    })
+  }
+}
 </script>
 
 <style scoped>
